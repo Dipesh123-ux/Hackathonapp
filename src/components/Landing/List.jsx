@@ -51,7 +51,7 @@ const List = () => {
 
 console.log(selected);
     useEffect(() => {
-        fetch('http://localhost:8080/api/hackathons', {
+        fetch('https://hackathondphi.herokuapp.com/api/hackathons', {
             method: 'GET',
         }).then((data) => {
             return data.json();
