@@ -3,33 +3,35 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import h1 from '../assests/bxs_cloud-upload.svg'
 
 const Update = () => {
-  const [title, setTitle] = useState('');
-  const [st, setSt] = useState('');
-  const [en, setEn] = useState('');
-  const [des, setDes] = useState('');
-  const [lev, setlev] = useState('');
+
+  const [values, setValues] = useState({
+    title: '',
+    start: '',
+    end: '',
+    description: '',
+    level: '',
+    formData : ''
+  })
+
+  const { title, start, end, description, level,formData } = values;
+
   let navigate = useNavigate();
-  const [hack, setHack] = useState({});
   let { id } = useParams();
 
   useEffect(() => {
-    fetch(`https://hackathondphi.herokuapp.com/api/hackathon/${id}`).then(data => {
+    fetch(` https://hackathondphi.herokuapp.com/api/hackathon/${id}`).then(data => {
       return data.json();
     }).then((h) => {
-      setTitle(h.title);
-      setSt(h.start)
-      setEn(h.end)
-      setDes(h.description)
-      setlev(h.level)
+      setValues({ ...values, title: h.title, start: h.start, end: h.end, description: h.description, level: h.level });
     })
-  }, [hack])
+  }, [])
 
-  const formData = new FormData();
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await fetch(`https://hackathondphi.herokuapp.com/api/update/${id}`, {
+    await fetch(` https://hackathondphi.herokuapp.com/api/update/${id}`, {
       method: 'put',
       headers: {
         Accept: "application/json"
@@ -40,6 +42,8 @@ const Update = () => {
       return response.json();
     })
       .then((data) => {
+
+        console.log(data)
 
         if (data) {
           navigate('/')
@@ -53,18 +57,13 @@ const Update = () => {
 
   const handleChange = name => e => {
 
-    if (name === "start" || name === "end") {
-      const val = new Date(`${e.target.value}`).getTime();
-      console.log(val.toString())
-      formData.set(name, val.toString());
-    }
-    else {
-      const value = name === "photo" ? e.target.files[0] : e.target.value;
-      console.log(value)
-      formData.set(name, value);
-    }
+    const formdata = new FormData();    
+    const value = name === "photo" ? e.target.files[0] : e.target.value;
+    console.log(name,value);
+    formdata.set(name, value);
+    setValues({ ...values, [name]: value,formData: formdata })
+}
 
-  }
 
 
   return (
@@ -86,7 +85,7 @@ const Update = () => {
               <label class="block   tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
                 Start date
               </label>
-              <input class="appearance-none block w-3/4 bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="datetime-local" placeholder="" onChange={handleChange("start")} />
+              <input value={start} class="appearance-none block w-3/4 bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="datetime-local" placeholder="" onChange={handleChange("start")} />
             </div>
           </div>
           <div class="flex flex-wrap -mx-3 mb-3">
@@ -94,7 +93,7 @@ const Update = () => {
               <label class="block   tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                 End date
               </label>
-              <input class="appearance-none block w-3/4 bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="datetime-local" onChange={handleChange("end")} />
+              <input value={end} class="appearance-none block w-3/4 bg-gray-200 text-gray-700 border border-gray-200 rounded py-1 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="datetime-local" onChange={handleChange("end")} />
             </div>
           </div>
           <div class="flex flex-wrap -mx-3 mb-2">
@@ -102,12 +101,13 @@ const Update = () => {
               <label class="block   tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
                 Description
               </label>
-              <textarea value={des} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Albuquerque" onChange={handleChange("description")}></textarea>
+              <textarea value={description} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Albuquerque" onChange={handleChange("description")}></textarea>
             </div>
             <div class="w-full mt-4 px-3 mb-6 md:mb-0">
               <label class="block   tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
                 Image
               </label>
+               <div style={{backgroundImage : `url(" https://hackathondphi.herokuapp.com/api/photo/${id}")`,backgroundSize:"cover"}} className="mt-2 mb-2 h-32 w-56 rounded"></div>
               <div className="bg-gray-300 h-12 w-4/12 rounded flex justify-center align-center">
                 <img className="h-8 absolute mt-2" src={h1} alt="" />
                 <input onChange={handleChange("photo")} className="opacity-0" type="file" />
@@ -118,7 +118,7 @@ const Update = () => {
                 Level
               </label>
               <div class="relative">
-                <select value={lev} onChange={handleChange("level")} class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-1 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                <select value={level} onChange={handleChange("level")} class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-1 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
                   <option>Easy</option>
                   <option>Medium</option>
                   <option>Hard</option>
@@ -131,8 +131,6 @@ const Update = () => {
           </div>
           <button className="bg-g text-white text-center p-2 mt-4 rounded" type="submit">Save Changes</button>
         </form>
-
-
       </div>
     </div>
   )

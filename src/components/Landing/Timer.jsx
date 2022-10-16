@@ -8,28 +8,28 @@ const Timer = ({ id ,start, end, title }) => {
     const [head,setHead] = useState("")
 
     useEffect(() => {
-        var s = parseInt(start);
-        var e = parseInt(end);
+        var s = new Date(start).getTime();
+        var e = new Date(end).getTime();
         var c = new Date().getTime();
-        var ended = new Date(e)
-        if (c < s) {
-            setDisplay("Start in");
+    
+        if (c < s && c < e) {
+            setDisplay("Starts in");
             setHead("Upcoming")
         }
-        else if (c > s && c < e) {
+         if (c > s && c < e) {
             setDisplay("Ended in")
             setHead("Active")
         }
-        else if (c > s && c > e) {
+         if (c > s && c > e) {
             setDisplay("Ended on")
             setHead("Past")
         }
 
-    }, [])
+    }, [start,end,head])
 
     const show = () => {
-        var s = parseInt(start);
-        var e = parseInt(end);
+        var s = new Date(start).getTime();
+        var e = new Date(end).getTime();
         var c = new Date().getTime();
         var sh, dis;
         if (c < s) {
@@ -41,12 +41,11 @@ const Timer = ({ id ,start, end, title }) => {
         else if(c > s && c > e){
             sh = -1;
         }
-        console.log(sh)
         return sh;
     }
 
     const Completionist = () => {
-        var ended = new Date(parseInt(end))
+        var ended = new Date(end)
 
         console.log(ended.toString())
 

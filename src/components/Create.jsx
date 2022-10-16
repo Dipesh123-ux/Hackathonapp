@@ -1,51 +1,42 @@
 import React from 'react'
 import h1 from '../assests/bxs_cloud-upload.svg'
 // import {CreateHack} from '../actions/hackathon'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Create = () => {
     let navigate = useNavigate()
 
     const formData = new FormData();
 
-    const handleSubmit = async (e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-      await fetch('https://hackathondphi.herokuapp.com/api/create',{
-            method : 'post',
-            headers : {
-                Accept : "application/json"
+        await fetch(' https://hackathondphi.herokuapp.com/api/create', {
+            method: 'post',
+            headers: {
+                Accept: "application/json"
             },
-            body : formData,
+            body: formData,
 
         }).then((response) => {
             return response.json();
         })
-        .then((data)=>{
-           
-            if(data.message){
-                navigate('/')
-            }
-        })
-        .catch(err=>{
-            console.log(err)
-        })
+            .then((data) => {
+
+                if (data.message) {
+                    navigate('/')
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
 
     }
 
-    const handleChange = name => e =>{
+    const handleChange = name => e => {
         
-        if(name === "start" || name === "end"){
-           const val = new Date(`${e.target.value}`).getTime(); 
-           console.log(val.toString())
-           formData.set(name,val.toString());
-        }
-        else{
-         const value = name === "photo" ? e.target.files[0] : e.target.value;
-         console.log(value)
-         formData.set(name,value);
-        }
-       
+        const value = name === "photo" ? e.target.files[0] : e.target.value;
+        formData.set(name, value);
     }
 
 
@@ -62,7 +53,7 @@ const Create = () => {
                             <label class="block   tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                                 Challenge Name
                             </label>
-                            <input class="appearance-none block w-3/4 bg-gray-200 text-gray-700 border rounded py-1 px-3 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="challenge" onChange={handleChange("title")}/>
+                            <input class="appearance-none block w-3/4 bg-gray-200 text-gray-700 border rounded py-1 px-3 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="challenge" onChange={handleChange("title")} />
                         </div>
                         <div class="w-full px-3">
                             <label class="block   tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
@@ -82,7 +73,7 @@ const Create = () => {
                     <div class="flex flex-wrap -mx-3 mb-2">
                         <div class="w-full px-3 mb-6 md:mb-0">
                             <label class="block   tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
-                               Description
+                                Description
                             </label>
                             <textarea class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Albuquerque" onChange={handleChange("description")}></textarea>
                         </div>
@@ -91,8 +82,8 @@ const Create = () => {
                                 Image
                             </label>
                             <div className="bg-gray-300 h-12 w-4/12 rounded flex justify-center align-center">
-                             <img className="h-8 absolute mt-2" src={h1} alt="" />  
-                            <input onChange={handleChange("photo")} className="opacity-0" type="file"/>
+                                <img className="h-8 absolute mt-2" src={h1} alt="" />
+                                <input onChange={handleChange("photo")} className="opacity-0" type="file" />
                             </div>
                         </div>
                         <div class="w-1/2 px-3 mt-4 md:mb-0">

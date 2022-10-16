@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
+import { RotatingLines } from 'react-loader-spinner'
 
 const SingleHack = () => {
     let navigate = useNavigate();
@@ -9,7 +10,7 @@ const SingleHack = () => {
     const { title, start, end, description, level } = hack;
     useEffect(() => {
         show();
-        fetch(`https://hackathondphi.herokuapp.com/api/hackathon/${id}`).then(data => {
+        fetch(` https://hackathondphi.herokuapp.com/api/hackathon/${id}`).then(data => {
             return data.json();
         }).then((h) => {
             console.log(h);
@@ -36,7 +37,7 @@ const SingleHack = () => {
     }
 
     const deleteHack = () => {
-        fetch(`https://hackathondphi.herokuapp.com/api/delete/${hack._id}`, {
+        fetch(` https://hackathondphi.herokuapp.com/api/delete/${hack._id}`, {
             method: "DELETE",
             headers: {
                 Accept: 'application/json'
@@ -57,7 +58,16 @@ const SingleHack = () => {
 
     const showData = ()=>{
    if(!hack){
-    return <div>Loading...</div>
+    return <div className="bg-primary h-48 flex justify-center">
+    <RotatingLines
+
+        strokeColor="grey"
+        strokeWidth="3"
+        animationDuration="0.75"
+        width="80"
+        visible={true}
+    />
+</div>
    }
         return  <div className="h-screen">
         <div className="h-2/5 bg-primary">
