@@ -37,10 +37,12 @@ const Create = () => {
     const handleChange = name => e => {
         
         const value = name === "photo" ? e.target.files[0] : e.target.value;
+        formData.set(name, value);
+        
         if(name === "photo"){
             setPhoto(URL.createObjectURL(value));
         }
-        formData.set(name, value);
+       
     }
 
 
