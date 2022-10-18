@@ -6,7 +6,10 @@ import { useNavigate } from 'react-router-dom'
 const Create = () => {
     let navigate = useNavigate()
 
-    const formData = new FormData();
+    const [values,setValues] = useState({
+        formData : new FormData()
+    })
+    const {formData} = values;
     const [photo,setPhoto] = useState(null);
 
     const handleSubmit = async (e) => {
@@ -38,12 +41,13 @@ const Create = () => {
         
         const value = name === "photo" ? e.target.files[0] : e.target.value;
         formData.set(name, value);
-
-        if(name === "photo"){
-            formData.set(name, value);
-            setPhoto(URL.createObjectURL(value));
-        }
        
+    }
+
+    const handleChange2 = e =>{
+        formData.set("photo",e.target.files[0])
+        setPhoto(URL.createObjectURL(e.target.files[0]));
+
     }
 
 
@@ -91,7 +95,7 @@ const Create = () => {
                             {photo && <div style={{backgroundImage : `url("${photo}")`,backgroundSize:"cover"}} className="mt-2 mb-2 h-32 w-56 rounded"></div> }
                             <div className="bg-gray-300 h-12 w-4/12 rounded flex justify-center align-center">
                                 <img className="h-8 absolute mt-2" src={h1} alt="" />
-                                <input onChange={handleChange("photo")} className="opacity-0" type="file" />
+                                <input onChange={handleChange2} className="opacity-0" type="file" />
                             </div>
                         </div>
                         <div class="w-1/2 px-3 mt-4 md:mb-0">
