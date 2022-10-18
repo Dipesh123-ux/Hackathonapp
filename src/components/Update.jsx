@@ -46,6 +46,9 @@ const Update = () => {
         console.log(data)
 
         if (data) {
+          fetch(' https://hackathondphi.herokuapp.com/api/hackathons', {
+            method: 'GET',
+          })
           navigate('/')
         }
       })

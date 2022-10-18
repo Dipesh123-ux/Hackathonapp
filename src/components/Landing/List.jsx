@@ -51,11 +51,11 @@ const List = () => {
         setQuery(e.target.value);
     }
 
-    useEffect(() => {
+    useEffect(async () => {
 
-        if((hackathons.length === 0) || (!query)){
-            fetch(' https://hackathondphi.herokuapp.com/api/hackathons', {
-            method: 'GET',
+       
+       await fetch(' https://hackathondphi.herokuapp.com/api/hackathons', {
+        method: 'GET',
         }).then((data) => {
             return data.json();
         })
@@ -65,9 +65,7 @@ const List = () => {
             .catch(err => {
                 console.log(err)
             })
-        }
         
-
         let updatedHack = hackathons;
         let final = [];
 
@@ -142,7 +140,7 @@ const List = () => {
             setHack(updatedHack)
         }
 
-    }, [hackathons, query])
+    }, [hackathons])
 
     const hideFilter = (i) => {
         console.log(i);
