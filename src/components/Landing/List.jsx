@@ -140,7 +140,7 @@ const List = () => {
             setHack(updatedHack)
         }
 
-    }, [hackathons])
+    }, [hackathons,query])
 
     const hideFilter = (i) => {
         console.log(i);
