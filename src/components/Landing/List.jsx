@@ -51,11 +51,11 @@ const List = () => {
         setQuery(e.target.value);
     }
 
-    useEffect(async () => {
+    useEffect(() => {
 
-       
-       await fetch(' https://hackathondphi.herokuapp.com/api/hackathons', {
-        method: 'GET',
+
+        fetch(' https://hackathondphi.herokuapp.com/api/hackathons', {
+            method: 'GET',
         }).then((data) => {
             return data.json();
         })
@@ -65,7 +65,7 @@ const List = () => {
             .catch(err => {
                 console.log(err)
             })
-        
+
         let updatedHack = hackathons;
         let final = [];
 
@@ -76,7 +76,7 @@ const List = () => {
             )
         }
 
-        if (selected.length > 0 ) {
+        if (selected.length > 0) {
             selected.forEach((item) => {
                 if (item === "easy") {
                     hackathons.forEach(h => {
@@ -101,7 +101,7 @@ const List = () => {
                 }
                 if (item === "upcoming") {
                     let c = new Date().getTime();
-                hackathons.forEach(h => {
+                    hackathons.forEach(h => {
                         let s = new Date(h.start).getTime();
                         let e = new Date(h.end).getTime();
                         if (s > c && e > c) {
@@ -132,11 +132,11 @@ const List = () => {
             })
         }
 
-        if(selected.length > 0){
+        if (selected.length > 0) {
             console.log(final)
             setHack(final)
         }
-        if(query){
+        if (query) {
             setHack(updatedHack)
         }
 
@@ -172,7 +172,7 @@ const List = () => {
         else {
 
             return <div className="ml-40 mr-40 grid md:grid-cols-3 gap-10">
-                {hackathons.map((item,i) => (
+                {hackathons.map((item, i) => (
                     <Hack key={i} hack={item} />
                 ))
                 }

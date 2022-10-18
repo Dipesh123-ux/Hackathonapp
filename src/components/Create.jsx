@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import h1 from '../assests/bxs_cloud-upload.svg'
 // import {CreateHack} from '../actions/hackathon'
 import { useNavigate } from 'react-router-dom'
@@ -7,6 +7,7 @@ const Create = () => {
     let navigate = useNavigate()
 
     const formData = new FormData();
+    const [photo,setPhoto] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,6 +37,9 @@ const Create = () => {
     const handleChange = name => e => {
         
         const value = name === "photo" ? e.target.files[0] : e.target.value;
+        if(name === "photo"){
+            setPhoto(URL.createObjectURL(value));
+        }
         formData.set(name, value);
     }
 
@@ -81,6 +85,7 @@ const Create = () => {
                             <label class="block   tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
                                 Image
                             </label>
+                            {photo && <div style={{backgroundImage : `url("${photo}")`,backgroundSize:"cover"}} className="mt-2 mb-2 h-32 w-56 rounded"></div> }
                             <div className="bg-gray-300 h-12 w-4/12 rounded flex justify-center align-center">
                                 <img className="h-8 absolute mt-2" src={h1} alt="" />
                                 <input onChange={handleChange("photo")} className="opacity-0" type="file" />
